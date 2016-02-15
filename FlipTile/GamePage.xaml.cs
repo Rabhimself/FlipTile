@@ -27,10 +27,13 @@ namespace FlipTile
         private Boolean animating = false;
         private int winFlag = 24;
         private Rectangle r;
-
+        //
+        private Rectangle[,] rectangleGrid = new Rectangle[4, 6];
+        //
         public GamePage()
         {
             this.InitializeComponent();
+            InitGrid();
             Randomize();
         }
 
@@ -50,30 +53,30 @@ namespace FlipTile
                 //down
                 if (!(row - 1 < 0))
                 {
-                    Flip((Rectangle)g.FindName("r" + (row - 1) + "" + col));
+                    Flip(rectangleGrid[row-1, col]);
                 }
                 //up
                 if (!(row + 1 > 3))
                 {
-                    Flip((Rectangle)g.FindName("r" + (row + 1) + col));
+                    Flip(rectangleGrid[row + 1, col]);
                 }
                 //
                 if (!(col - 1 < 0))
                 {
-                    Flip((Rectangle)g.FindName("r" + row + (col - 1)));
+                    Flip(rectangleGrid[row, col-1]);
                 }
                 //down
                 if (!(col + 1 > 5))
                 {
-                    Flip((Rectangle)g.FindName("r" + row + (col + 1)));
+                    Flip(rectangleGrid[row, col + 1]);
                 }
             }
-            
+
         }
 
         private void Flip(Rectangle r)
-        {   
-                 
+        {
+            
             //Need to replace this method of animating multiple rectangles.
             //Too many Storyboard objects are being GCed
             Storyboard sb = new Storyboard();
@@ -101,7 +104,7 @@ namespace FlipTile
             {
                 ca.To = (Windows.UI.Colors.AliceBlue);
                 winFlag--;
-            }           
+            }
 
             Storyboard.SetTargetProperty(da, "Height");
             Storyboard.SetTargetProperty(ca, "(Fill).(Color)");
@@ -116,22 +119,35 @@ namespace FlipTile
         }
 
         private void ToggleAnim(object sender, object e)
-        {    
+        {
             animating = false;
             if (winFlag == 0)
                 Frame.Navigate(typeof(MainPage));
         }
         private void Randomize()
         {
+
             Random rand = new Random();
             int max = rand.Next(12);
 
-            for(int i = 0; i< max; i++)
+            for (int i = 0; i < max; i++)
             {
                 int row = rand.Next(3);
                 int col = rand.Next(5);
 
-                Flip((Rectangle)FindName("r" + row +"" + col));
+                Flip(rectangleGrid[row, col]);
+            }
+        }
+        private void InitGrid()
+        {
+            for (int row = 0; row < 4; row++)
+            {
+                for (int col = 0; col < 6; col++)
+                {
+                    Rectangle r = (Rectangle)FindName("r" + row + "" + col);
+
+                    rectangleGrid[row,col] = r;
+                }   
             }
         }
     }
