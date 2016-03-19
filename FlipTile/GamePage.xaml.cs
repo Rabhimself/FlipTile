@@ -1,153 +1,145 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
-using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Shapes;
+
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace FlipTile
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
+    //TODO:
     public sealed partial class GamePage : Page
     {
         private Boolean animating = false;
         private int winFlag = 24;
-        private Rectangle r;
+        private Tile tile;
+        SolidColorBrush brush;
         //
-        private Rectangle[,] rectangleGrid = new Rectangle[4, 6];
+        private Tile[,] tileGrid = new Tile[4, 6];
         //
         public GamePage()
         {
             this.InitializeComponent();
-            InitGrid();
-            Randomize();
-        }
-
-        private void tapped(object sender, TappedRoutedEventArgs e)
-        {
-            if (!animating)
-            {
-                animating = true;
-                r = (Rectangle)sender;
-                Flip(r);
-                String name = r.Name.Substring(1);
-                int row = Convert.ToInt16(name.Substring(0, 1));
-                int col = Convert.ToInt16(name.Substring(1));
-
-                Grid g = (Grid)r.Parent;
-
-                //down
-                if (!(row - 1 < 0))
-                {
-                    Flip(rectangleGrid[row-1, col]);
-                }
-                //up
-                if (!(row + 1 > 3))
-                {
-                    Flip(rectangleGrid[row + 1, col]);
-                }
-                //
-                if (!(col - 1 < 0))
-                {
-                    Flip(rectangleGrid[row, col-1]);
-                }
-                //down
-                if (!(col + 1 > 5))
-                {
-                    Flip(rectangleGrid[row, col + 1]);
-                }
-            }
-
-        }
-
-        private void Flip(Rectangle r)
-        {
+            Init();
+            Loaded += Randomize;
             
-            //Need to replace this method of animating multiple rectangles.
-            //Too many Storyboard objects are being GCed
-            Storyboard sb = new Storyboard();
-
-            DoubleAnimation da = new DoubleAnimation();
-            da.AutoReverse = true;
-            da.EnableDependentAnimation = true;
-            da.Duration = new Duration(new TimeSpan(0, 0, 0, 0, 250));
-            da.To = 0;
-
-            ColorAnimation ca = new ColorAnimation();
-            ca.AutoReverse = false;
-            ca.Duration = new Duration(new TimeSpan(0, 0, 0, 0, 1));
-            ca.BeginTime = new TimeSpan(0, 0, 0, 0, 125);
-
-            SolidColorBrush faceDownColor = new SolidColorBrush(Windows.UI.Colors.AliceBlue);
-            SolidColorBrush currentColor = (SolidColorBrush)r.Fill;
-
-            if (currentColor.Color == faceDownColor.Color)
-            {
-                ca.To = (Windows.UI.Colors.Blue);
-                winFlag++;
-            }
-            else
-            {
-                ca.To = (Windows.UI.Colors.AliceBlue);
-                winFlag--;
-            }
-
-            Storyboard.SetTargetProperty(da, "Height");
-            Storyboard.SetTargetProperty(ca, "(Fill).(Color)");
-            Storyboard.SetTarget(ca, r);
-            Storyboard.SetTarget(da, r);
-            sb.Duration = new Duration(new TimeSpan(0, 0, 0, 0, 500));
-            sb.Children.Add(da);
-            sb.Children.Add(ca);
-            sb.Completed += new EventHandler<object>(ToggleAnim);
-
-            sb.Begin();
         }
 
-        private void ToggleAnim(object sender, object e)
+        private async void Randomize(object sender, RoutedEventArgs e)
         {
-            animating = false;
-            if (winFlag == 0)
-                Frame.Navigate(typeof(MainPage));
-        }
-        private void Randomize()
-        {
+
 
             Random rand = new Random();
-            int max = rand.Next(12);
+            int max = rand.Next(2, 12);
 
             for (int i = 0; i < max; i++)
             {
                 int row = rand.Next(3);
                 int col = rand.Next(5);
 
-                Flip(rectangleGrid[row, col]);
+                while (animating)
+                {
+                    await Task.Delay(25);
+                }
+                Flip(tileGrid[row, col], rectTappedSB);
             }
+
         }
-        private void InitGrid()
+
+        private void tapped(object sender, TappedRoutedEventArgs e)
+        {
+            if (!animating)
+            {
+
+                int row = Convert.ToInt16(((Rectangle)sender).Name.Substring(1, 1));
+                int col = Convert.ToInt16(((Rectangle)sender).Name.Substring(2));
+                Flip(tileGrid[row, col], rectTappedSB);
+
+                //down
+                if (!(row - 1 < 0))
+                {
+                    Flip(tileGrid[row - 1, col], rectDownSB);
+                }
+                //up
+                if (!(row + 1 > 3))
+                {
+                    Flip(tileGrid[row + 1, col], rectUpSB);
+                }
+                //Left
+                if (!(col - 1 < 0))
+                {
+                    Flip(tileGrid[row, col - 1], rectLeftSB);
+                }
+                //down
+                if (!(col + 1 > 5))
+                {
+                    Flip(tileGrid[row, col + 1], rectRightSB);
+                }
+            }
+
+        }
+
+        private void Flip(Tile tile, Storyboard sb)
+        {
+            sb.Stop();
+            animating = true;
+
+            Storyboard.SetTargetName(sb, tile.Rect.Name);
+
+            if (tile.Faceup)
+            {
+                sb.Children.OfType<ColorAnimation>().First().To = Windows.UI.Colors.Blue;
+            }
+            else
+            {
+                sb.Children.OfType<ColorAnimation>().First().To = Windows.UI.Colors.AliceBlue;
+            }
+            tile.Rect.Height = tile.Rect.ActualHeight;
+            sb.Begin();
+        }
+
+        private void ToggleAnim(object sender, object e)
+        {
+            char[] name = Storyboard.GetTargetName(((Storyboard)sender)).ToCharArray();
+
+            int row = Convert.ToInt16(name[1].ToString());
+            int col = Convert.ToInt16(name[2].ToString());
+
+            if (tileGrid[row, col].Faceup)
+            {
+                ((SolidColorBrush)tileGrid[row, col].Rect.Fill).Color = Windows.UI.Colors.Blue;
+            }
+            else
+            {
+                ((SolidColorBrush)tileGrid[row, col].Rect.Fill).Color = Windows.UI.Colors.AliceBlue;
+            }
+
+            ((Storyboard)sender).Stop();
+
+            tileGrid[row, col].Faceup = !tileGrid[row, col].Faceup;
+            animating = false;
+            if (winFlag == 0)
+                Frame.Navigate(typeof(MainPage));
+        }
+
+        private void Init()
         {
             for (int row = 0; row < 4; row++)
             {
                 for (int col = 0; col < 6; col++)
                 {
-                    Rectangle r = (Rectangle)FindName("r" + row + "" + col);
+                    Tile tile = new Tile();
+                    tile.Rect = (Rectangle)FindName("r" + row + "" + col);
 
-                    rectangleGrid[row,col] = r;
-                }   
+                    tileGrid[row, col] = tile;
+                }
             }
         }
     }

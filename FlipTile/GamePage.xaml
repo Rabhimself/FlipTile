@@ -6,33 +6,97 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-    
+    <!--<VisualStateManager.VisualStateGroups>            
+        <VisualStateGroup>                
+            <VisualState>                    
+                <VisualState.StateTriggers>                    
+                </VisualState.StateTriggers>
+                <VisualState.Setters>                        
+                </VisualState.Setters>                 
+            </VisualState>             
+        </VisualStateGroup>         
+    </VisualStateManager.VisualStateGroups>-->
     <Page.Resources>
-        <Storyboard x:Key="sb" x:Name="rectSB">
+        <Storyboard x:Key="sbCenter" x:Name="rectTappedSB" Completed="ToggleAnim" Duration="0:0:0.5">
             <DoubleAnimation  EnableDependentAnimation="True" 
                               Storyboard.TargetProperty="Height"
                               To="0" 
                               AutoReverse="True"
                               Duration="0:0:0.24"
                               BeginTime="0"></DoubleAnimation>
-            <ColorAnimation Storyboard.TargetProperty="(Rectangle.Fill).(Color)" 
-                            To="Beige"
+            <ColorAnimation x:Name="caCenter"
+                            Storyboard.TargetProperty="(Rectangle.Fill).(Color)"                          
                             Duration="0:0:0"
                             AutoReverse="False"
                             BeginTime="0:0:0.12"></ColorAnimation>
         </Storyboard>
+        <Storyboard x:Key="sbLeft" x:Name="rectLeftSB" Completed="ToggleAnim" Duration="0:0:0.5">
+            <DoubleAnimation  EnableDependentAnimation="True" 
+                              Storyboard.TargetProperty="Height"
+                              To="0" 
+                              AutoReverse="True"
+                              Duration="0:0:0.24"
+                              BeginTime="0"></DoubleAnimation>
+            <ColorAnimation x:Name="caLeft"
+                            Storyboard.TargetProperty="(Rectangle.Fill).(Color)"                           
+                            Duration="0:0:0"
+                            AutoReverse="False"
+                            BeginTime="0:0:0.12"></ColorAnimation>
+        </Storyboard>
+        <Storyboard x:Key="sbRight" x:Name="rectRightSB" Completed="ToggleAnim" Duration="0:0:0.5">
+            <DoubleAnimation  EnableDependentAnimation="True" 
+                              Storyboard.TargetProperty="Height"
+                              To="0" 
+                              AutoReverse="True"
+                              Duration="0:0:0.24"
+                              BeginTime="0"></DoubleAnimation>
+            <ColorAnimation x:Name="caRight"
+                            Storyboard.TargetProperty="(Rectangle.Fill).(Color)" 
+                            
+                            Duration="0:0:0"
+                            AutoReverse="False"
+                            BeginTime="0:0:0.12"></ColorAnimation>
+        </Storyboard>
+        <Storyboard x:Key="sbUp" x:Name="rectUpSB" Completed="ToggleAnim" Duration="0:0:0.5">
+            <DoubleAnimation  EnableDependentAnimation="True" 
+                              Storyboard.TargetProperty="Height"
+                              To="0" 
+                              AutoReverse="True"
+                              Duration="0:0:0.24"
+                              BeginTime="0"></DoubleAnimation>
+            <ColorAnimation x:Name="caUp"
+                            Storyboard.TargetProperty="(Rectangle.Fill).(Color)" 
+                            
+                            Duration="0:0:0"
+                            AutoReverse="False"
+                            BeginTime="0:0:0.12"></ColorAnimation>
+        </Storyboard>
+        <Storyboard x:Key="sbDown" x:Name="rectDownSB" Completed="ToggleAnim" Duration="0:0:0.5">
+            <DoubleAnimation  EnableDependentAnimation="True" 
+                              Storyboard.TargetProperty="Height"
+                              To="0" 
+                              AutoReverse="True"
+                              Duration="0:0:0.24"
+                              BeginTime="0"></DoubleAnimation>
+            <ColorAnimation x:Name="caDown"
+                            Storyboard.TargetProperty="(Rectangle.Fill).(Color)" 
+                            
+                            Duration="0:0:0"
+                            AutoReverse="False"
+                            BeginTime="0:0:0.12"></ColorAnimation>
+        </Storyboard>
+
         <Style TargetType="Rectangle" x:Name="rectStyle">
             <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
             <Setter Property="VerticalAlignment" Value="Stretch"></Setter>
             <Setter Property="Fill" Value="Blue"></Setter>
-            <Setter Property="Stroke" Value="Black"></Setter>
+            <!--<Setter Property="Stroke" Value="Black"></Setter>-->
             <Setter Property="Margin" Value="5"></Setter>
-            <Setter Property="Height" Value="200"/>
-            <Setter Property="Width" Value="200"/>
+
         </Style>
     </Page.Resources>
 
-    <Grid >
+    <Grid x:Name="MainGrid">
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
@@ -40,6 +104,7 @@
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition MinWidth="100"></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
@@ -47,25 +112,33 @@
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="0" Grid.Row="0" Name="r00" Tapped="tapped"/>
+        <StackPanel Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Center" >
+            
+            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="Time"/>
+            <TextBlock Margin="5" Text="00:00:00" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <Button Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center">Pause</Button>
+            <Button Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center">Reset</Button>
+        </StackPanel>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="6" Grid.Row="0" 
+                   Name="r00" Tapped="tapped" Margin="10,5,0,5"/>
         <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="1" Grid.Row="0" Name="r01" Tapped="tapped"/>
         <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="2" Grid.Row="0" Name="r02" Tapped="tapped"/>
         <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="3" Grid.Row="0" Name="r03" Tapped="tapped"/>
         <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="4" Grid.Row="0" Name="r04" Tapped="tapped"/>
         <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="5" Grid.Row="0" Name="r05" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="0" Grid.Row="1" Name="r10" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="6" Grid.Row="1" Name="r10" Tapped="tapped"/>
         <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="1" Grid.Row="1" Name="r11" Tapped="tapped"/>
         <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="2" Grid.Row="1" Name="r12" Tapped="tapped"/>
         <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="3" Grid.Row="1" Name="r13" Tapped="tapped"/>
         <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="4" Grid.Row="1" Name="r14" Tapped="tapped"/>
         <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="5" Grid.Row="1" Name="r15" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="0" Grid.Row="2" Name="r20" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="6" Grid.Row="2" Name="r20" Tapped="tapped"/>
         <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="1" Grid.Row="2" Name="r21" Tapped="tapped"/>
         <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="2" Grid.Row="2" Name="r22" Tapped="tapped"/>
         <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="3" Grid.Row="2" Name="r23" Tapped="tapped"/>
         <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="4" Grid.Row="2" Name="r24" Tapped="tapped"/>
         <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="5" Grid.Row="2" Name="r25" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="0" Grid.Row="3" Name="r30" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="6" Grid.Row="3" Name="r30" Tapped="tapped"/>
         <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="1" Grid.Row="3" Name="r31" Tapped="tapped"/>
         <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="2" Grid.Row="3" Name="r32" Tapped="tapped"/>
         <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="3" Grid.Row="3" Name="r33" Tapped="tapped"/>
