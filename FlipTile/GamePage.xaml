@@ -115,7 +115,7 @@
         <StackPanel Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Center" >
             
             <TextBlock VerticalAlignment="Center" Foreground="White" HorizontalAlignment="Center" Text="Time"/>
-            <TextBlock Margin="5" Text="00:00:00" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <TextBlock x:Name="txtTimer" Margin="5" Text="00:00:00" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             <Button Margin="5" VerticalAlignment="Center" Foreground="White" HorizontalAlignment="Center" Tapped="Pause_Tapped">Pause</Button>
             <Button Margin="5" VerticalAlignment="Center" Foreground="White" HorizontalAlignment="Center" Tapped="Reset_Tapped">Reset</Button>
         </StackPanel>

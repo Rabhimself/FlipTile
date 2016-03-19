@@ -17,9 +17,10 @@ using Windows.UI.Xaml.Navigation;
 
 namespace FlipTile
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
+    //TODO: Where to begin?
+    //      Load best times&flips from localstore
+    //      Localization/lang select (?)
+    //      
     public sealed partial class MainPage : Page
     {
         public MainPage()
