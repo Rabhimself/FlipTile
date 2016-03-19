@@ -96,7 +96,7 @@
         </Style>
     </Page.Resources>
 
-    <Grid x:Name="MainGrid">
+    <Grid x:Name="MainGrid" Background="DarkBlue">
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
@@ -114,35 +114,35 @@
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Center" >
             
-            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="Time"/>
-            <TextBlock Margin="5" Text="00:00:00" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-            <Button Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center">Pause</Button>
-            <Button Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center">Reset</Button>
+            <TextBlock VerticalAlignment="Center" Foreground="White" HorizontalAlignment="Center" Text="Time"/>
+            <TextBlock Margin="5" Text="00:00:00" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <Button Margin="5" VerticalAlignment="Center" Foreground="White" HorizontalAlignment="Center" Tapped="Pause_Tapped">Pause</Button>
+            <Button Margin="5" VerticalAlignment="Center" Foreground="White" HorizontalAlignment="Center" Tapped="Reset_Tapped">Reset</Button>
         </StackPanel>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="6" Grid.Row="0" 
-                   Name="r00" Tapped="tapped" Margin="10,5,0,5"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="1" Grid.Row="0" Name="r01" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="2" Grid.Row="0" Name="r02" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="3" Grid.Row="0" Name="r03" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="4" Grid.Row="0" Name="r04" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="5" Grid.Row="0" Name="r05" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="6" Grid.Row="1" Name="r10" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="1" Grid.Row="1" Name="r11" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="2" Grid.Row="1" Name="r12" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="3" Grid.Row="1" Name="r13" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="4" Grid.Row="1" Name="r14" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="5" Grid.Row="1" Name="r15" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="6" Grid.Row="2" Name="r20" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="1" Grid.Row="2" Name="r21" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="2" Grid.Row="2" Name="r22" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="3" Grid.Row="2" Name="r23" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="4" Grid.Row="2" Name="r24" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="5" Grid.Row="2" Name="r25" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="6" Grid.Row="3" Name="r30" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="1" Grid.Row="3" Name="r31" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="2" Grid.Row="3" Name="r32" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="3" Grid.Row="3" Name="r33" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="4" Grid.Row="3" Name="r34" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="5" Grid.Row="3" Name="r35" Tapped="tapped"/>
+        
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="1" Grid.Row="0" Name="r00" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="2" Grid.Row="0" Name="r01" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="3" Grid.Row="0" Name="r02" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="4" Grid.Row="0" Name="r03" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="5" Grid.Row="0" Name="r04" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="6" Grid.Row="0" Name="r05" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="1" Grid.Row="1" Name="r10" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="2" Grid.Row="1" Name="r11" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="3" Grid.Row="1" Name="r12" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="4" Grid.Row="1" Name="r13" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="5" Grid.Row="1" Name="r14" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="6" Grid.Row="1" Name="r15" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="1" Grid.Row="2" Name="r20" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="2" Grid.Row="2" Name="r21" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="3" Grid.Row="2" Name="r22" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="4" Grid.Row="2" Name="r23" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="5" Grid.Row="2" Name="r24" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="6" Grid.Row="2" Name="r25" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="1" Grid.Row="3" Name="r30" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="2" Grid.Row="3" Name="r31" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="3" Grid.Row="3" Name="r32" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="4" Grid.Row="3" Name="r33" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="5" Grid.Row="3" Name="r34" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="6" Grid.Row="3" Name="r35" Tapped="tapped"/>
     </Grid>                                                                         
 </Page>
