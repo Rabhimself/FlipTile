@@ -16,6 +16,7 @@
             </VisualState>             
         </VisualStateGroup>         
     </VisualStateManager.VisualStateGroups>-->
+
     <Page.Resources>
         <Storyboard x:Key="sbCenter" x:Name="rectTappedSB" Completed="ToggleAnim" Duration="0:0:0.5">
             <DoubleAnimation  EnableDependentAnimation="True" 
@@ -24,79 +25,89 @@
                               AutoReverse="True"
                               Duration="0:0:0.24"
                               BeginTime="0"></DoubleAnimation>
+            <DoubleAnimation  EnableDependentAnimation="True" 
+                              Storyboard.TargetProperty="Width"
+                              To="0" 
+                              AutoReverse="True"
+                              Duration="0:0:0.24"
+                              BeginTime="0"></DoubleAnimation>
             <ColorAnimation x:Name="caCenter"
                             Storyboard.TargetProperty="(Rectangle.Fill).(Color)"                          
                             Duration="0:0:0"
                             AutoReverse="False"
-                            BeginTime="0:0:0.12"></ColorAnimation>
+                            BeginTime="0:0:0.24"></ColorAnimation>
         </Storyboard>
-        <Storyboard x:Key="sbLeft" x:Name="rectLeftSB" Completed="ToggleAnim" Duration="0:0:0.5">
+        <Storyboard x:Key="sbLeft" x:Name="rectLeftSB" Completed="ToggleAnim" Duration="0:0:1">
             <DoubleAnimation  EnableDependentAnimation="True" 
-                              Storyboard.TargetProperty="Height"
+                              Storyboard.TargetProperty="Width"
                               To="0" 
                               AutoReverse="True"
                               Duration="0:0:0.24"
-                              BeginTime="0"></DoubleAnimation>
+                              BeginTime="0:0:0.5"></DoubleAnimation>
             <ColorAnimation x:Name="caLeft"
                             Storyboard.TargetProperty="(Rectangle.Fill).(Color)"                           
                             Duration="0:0:0"
                             AutoReverse="False"
-                            BeginTime="0:0:0.12"></ColorAnimation>
+                            BeginTime="0:0:0.74"></ColorAnimation>
         </Storyboard>
-        <Storyboard x:Key="sbRight" x:Name="rectRightSB" Completed="ToggleAnim" Duration="0:0:0.5">
+        <Storyboard x:Key="sbRight" x:Name="rectRightSB" Completed="ToggleAnim" Duration="0:0:1">
             <DoubleAnimation  EnableDependentAnimation="True" 
-                              Storyboard.TargetProperty="Height"
+                              Storyboard.TargetProperty="Width"
                               To="0" 
                               AutoReverse="True"
                               Duration="0:0:0.24"
-                              BeginTime="0"></DoubleAnimation>
+                              BeginTime="0:0:0.5"></DoubleAnimation>
             <ColorAnimation x:Name="caRight"
-                            Storyboard.TargetProperty="(Rectangle.Fill).(Color)" 
-                            
+                            Storyboard.TargetProperty="(Rectangle.Fill).(Color)"                             
                             Duration="0:0:0"
                             AutoReverse="False"
-                            BeginTime="0:0:0.12"></ColorAnimation>
+                            BeginTime="0:0:0.74"></ColorAnimation>
         </Storyboard>
-        <Storyboard x:Key="sbUp" x:Name="rectUpSB" Completed="ToggleAnim" Duration="0:0:0.5">
+        <Storyboard x:Key="sbUp" x:Name="rectUpSB" Completed="ToggleAnim" Duration="0:0:1">
             <DoubleAnimation  EnableDependentAnimation="True" 
                               Storyboard.TargetProperty="Height"
                               To="0" 
                               AutoReverse="True"
                               Duration="0:0:0.24"
-                              BeginTime="0"></DoubleAnimation>
+                              BeginTime="0:0:0.5"></DoubleAnimation>
             <ColorAnimation x:Name="caUp"
-                            Storyboard.TargetProperty="(Rectangle.Fill).(Color)" 
-                            
+                            Storyboard.TargetProperty="(Rectangle.Fill).(Color)"                            
                             Duration="0:0:0"
                             AutoReverse="False"
-                            BeginTime="0:0:0.12"></ColorAnimation>
+                            BeginTime="0:0:0.74"></ColorAnimation>
         </Storyboard>
-        <Storyboard x:Key="sbDown" x:Name="rectDownSB" Completed="ToggleAnim" Duration="0:0:0.5">
+        <Storyboard x:Key="sbDown" x:Name="rectDownSB" Completed="ToggleAnim" Duration="0:0:1">
             <DoubleAnimation  EnableDependentAnimation="True" 
                               Storyboard.TargetProperty="Height"
                               To="0" 
                               AutoReverse="True"
                               Duration="0:0:0.24"
-                              BeginTime="0"></DoubleAnimation>
+                              BeginTime="0:0:0.5"></DoubleAnimation>
             <ColorAnimation x:Name="caDown"
-                            Storyboard.TargetProperty="(Rectangle.Fill).(Color)" 
-                            
+                            Storyboard.TargetProperty="(Rectangle.Fill).(Color)"                            
                             Duration="0:0:0"
                             AutoReverse="False"
-                            BeginTime="0:0:0.12"></ColorAnimation>
+                            BeginTime="0:0:0.74"></ColorAnimation>
         </Storyboard>
 
         <Style TargetType="Rectangle" x:Name="rectStyle">
             <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
             <Setter Property="VerticalAlignment" Value="Stretch"></Setter>
-            <Setter Property="Fill" Value="Blue"></Setter>
-            <!--<Setter Property="Stroke" Value="Black"></Setter>-->
+            <Setter Property="Fill" Value="Black"></Setter>
+            <Setter Property="Stroke" Value="Black"></Setter>
             <Setter Property="Margin" Value="5"></Setter>
 
         </Style>
+        <Style TargetType="Button" x:Name="ButtonStyle">
+            <Setter Property="Margin" Value="5"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="Foreground" Value="Black"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+            <Setter Property="Background" Value="White"></Setter>
+        </Style>
     </Page.Resources>
 
-    <Grid x:Name="MainGrid" Background="DarkBlue">
+    <Grid x:Name="MainGrid" Background="White" SizeChanged="MainGrid_SizeChanged" >
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
@@ -112,14 +123,25 @@
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Center" >
-            
-            <TextBlock VerticalAlignment="Center" Foreground="White" HorizontalAlignment="Center" Text="Time"/>
-            <TextBlock x:Name="txtTimer" Margin="5" Text="00:00:00" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-            <Button Margin="5" VerticalAlignment="Center" Foreground="White" HorizontalAlignment="Center" Tapped="Pause_Tapped">Pause</Button>
-            <Button Margin="5" VerticalAlignment="Center" Foreground="White" HorizontalAlignment="Center" Tapped="Reset_Tapped">Reset</Button>
+        <StackPanel Grid.Column="0" Grid.Row="0" VerticalAlignment="Stretch" Background="Black" >
+            <StackPanel Background="White" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock  VerticalAlignment="Top" Foreground="Black" HorizontalAlignment="Center" Text="Time"/>
+            </StackPanel>
+            <StackPanel Background="White">
+                <TextBlock x:Name="txtTimer" Margin="5" Text="00:00:00" Foreground="Black" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </StackPanel>
+
         </StackPanel>
-        
+        <StackPanel Grid.Column="0" Grid.Row="1" Grid.RowSpan="3" VerticalAlignment="Stretch" Background="Black" >
+            <Button Margin="5" VerticalAlignment="Center" Foreground="Black" Background="White" HorizontalAlignment="Center" Tapped="Pause_Tapped">Pause</Button>
+            <Button Margin="5" VerticalAlignment="Center" Foreground="Black" Background="White" HorizontalAlignment="Center" Tapped="Reset_Tapped">Reset</Button>
+            <Button Margin="5" VerticalAlignment="Center" Foreground="Black" Background="White" HorizontalAlignment="Center"  Tapped="Fast_Tapped">Fast</Button>
+            <Button Margin="5" VerticalAlignment="Center" Foreground="Black" Background="White" HorizontalAlignment="Center"  Tapped="Medium_Tapped">Medium</Button>
+            <Button Margin="5" VerticalAlignment="Center" Foreground="Black" Background="White" HorizontalAlignment="Center"  Tapped="Slow_Tapped">Slow</Button>
+        </StackPanel>
+
+
+
         <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="1" Grid.Row="0" Name="r00" Tapped="tapped"/>
         <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="2" Grid.Row="0" Name="r01" Tapped="tapped"/>
         <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="3" Grid.Row="0" Name="r02" Tapped="tapped"/>
@@ -144,5 +166,7 @@
         <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="4" Grid.Row="3" Name="r33" Tapped="tapped"/>
         <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="5" Grid.Row="3" Name="r34" Tapped="tapped"/>
         <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="6" Grid.Row="3" Name="r35" Tapped="tapped"/>
-    </Grid>                                                                         
+        <Button x:Name="button" Content="" HorizontalAlignment="Left" Margin="10,38,0,0" Grid.Row="2" VerticalAlignment="Top"/>
+    </Grid>
+
 </Page>
