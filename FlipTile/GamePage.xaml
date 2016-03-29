@@ -141,7 +141,6 @@
         </StackPanel>
 
 
-
         <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="1" Grid.Row="0" Name="r00" Tapped="tapped"/>
         <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="2" Grid.Row="0" Name="r01" Tapped="tapped"/>
         <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="3" Grid.Row="0" Name="r02" Tapped="tapped"/>
@@ -167,6 +166,10 @@
         <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="5" Grid.Row="3" Name="r34" Tapped="tapped"/>
         <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="6" Grid.Row="3" Name="r35" Tapped="tapped"/>
         <Button x:Name="button" Content="" HorizontalAlignment="Left" Margin="10,38,0,0" Grid.Row="2" VerticalAlignment="Top"/>
+
+        <Grid x:Name="BeginButtonGrid" Background="Gray" Grid.Column="1" Grid.Row="0" Grid.RowSpan="4" Grid.ColumnSpan="6">
+            <Button HorizontalAlignment="Center" VerticalAlignment="Center" Tapped="BeginButton_Tapped">Begin</Button>
+        </Grid>
     </Grid>
 
 </Page>

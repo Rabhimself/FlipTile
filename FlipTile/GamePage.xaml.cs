@@ -20,7 +20,7 @@ namespace FlipTile
     // Animation speed setting
     // store previous games for replayability, store randomize events in an array, reproduce them in a list view?
     //reset button rework, needs the replayability stuff done first, if that gets done
-
+    // Randomize more than one tile, dont forget to delete that...
     public sealed partial class GamePage : Page
     {
         #region Global Vars
@@ -61,11 +61,7 @@ namespace FlipTile
         //sets up the tilegrid for use later on
         private void Init()
         {
-            dispatcherTimer = new DispatcherTimer();
-            stopWatch = new Stopwatch();
-            dispatcherTimer.Tick += Dispatcher_Tick;
-            dispatcherTimer.Start();
-            stopWatch.Start();
+           GoInstant();
             winFlag = 24;
             for (int row = 0; row < 4; row++)
             {
@@ -104,7 +100,7 @@ namespace FlipTile
         {
 
             Random rand = new Random();
-            int max = 1;
+            int max = 12;
 
             for (int i = 0; i < max; i++)
             {
@@ -127,6 +123,7 @@ namespace FlipTile
         //Try to ecapsulate this stuff, would make implementing the previous games feature easier
         private async void RecallImprint()//pass in the array in the future
         {
+        
             int count = GetFlipCount(GameboardImprint);
             for (int i = 0; i < rows; i++)
             {
@@ -141,8 +138,7 @@ namespace FlipTile
                     if (GameboardImprint[i, j] == 1)
                     {
                         BatchFlip(i, j);
-                        if (--count == 0)
-                            lastTile = true;
+
                     }
                         
                 }
@@ -310,6 +306,8 @@ namespace FlipTile
             {
                 for (int j = 0; j < rows; j++)
                 {
+                    if (i == (cols-1) && j == (rows-1))
+                        lastTile = true;
                     if (tileGrid[j, i].Faceup == true)
                     {
                         //wait for the previous animation to finish
@@ -318,9 +316,10 @@ namespace FlipTile
                             //poll every 25ms
                             await Task.Delay(25);
                         }
-                        
+
                         Flip(tileGrid[j, i], rectTappedSB);
                     }
+
                 }
             }
 
@@ -368,6 +367,17 @@ namespace FlipTile
             {
                 Flip(tileGrid[row, col + 1], rectRightSB);
             }
+        }
+
+        private void BeginButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            GoNormal();
+            dispatcherTimer = new DispatcherTimer();
+            stopWatch = new Stopwatch();
+            dispatcherTimer.Tick += Dispatcher_Tick;
+            dispatcherTimer.Start();
+            stopWatch.Start();
+            BeginButtonGrid.Visibility = Visibility.Collapsed;
         }
 
         private void SetAnimSpeed(int speed)
