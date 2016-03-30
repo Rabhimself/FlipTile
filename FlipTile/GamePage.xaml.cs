@@ -20,7 +20,7 @@ namespace FlipTile
     // Animation speed setting
     // store previous games for replayability, store randomize events in an array, reproduce them in a list view?
     //reset button rework, needs the replayability stuff done first, if that gets done
-    // Randomize more than one tile, dont forget to delete that...
+
     public sealed partial class GamePage : Page
     {
         #region Global Vars
@@ -29,7 +29,7 @@ namespace FlipTile
         private Boolean resetting = false;
         private Boolean lastTile = false;
         //Use a grid to ref tiles, reduce findname calls
-        private static int rows = 4, cols = 6, winFlag = 24;
+        private static int rows = 4, cols = 6, winFlag = 24, flipCount = 0;
         private Tile[,] tileGrid = new Tile[rows, cols];
         //Timer stuff
         DispatcherTimer dispatcherTimer;
@@ -100,7 +100,7 @@ namespace FlipTile
         {
 
             Random rand = new Random();
-            int max = 12;
+            int max = 1;
 
             for (int i = 0; i < max; i++)
             {
@@ -120,52 +120,8 @@ namespace FlipTile
 
         }
 
-        //Try to ecapsulate this stuff, would make implementing the previous games feature easier
-        private async void RecallImprint()//pass in the array in the future
-        {
-        
-            int count = GetFlipCount(GameboardImprint);
-            for (int i = 0; i < rows; i++)
-            {
-                for (int j = 0; j < cols; j++)
-                {
-                    while (animating)
-                    {
-                        //poll every 25ms
-                        await Task.Delay(25);
-                    }
 
-                    if (GameboardImprint[i, j] == 1)
-                    {
-                        BatchFlip(i, j);
 
-                    }
-                        
-                }
-
-            }
-        }
-
-        private int GetFlipCount(int[,] arr)
-        {
-            int rows = arr.GetLength(0);
-            int cols = arr.GetLength(1);
-            int count = 0;
-
-            for (int i = 0; i < rows; i++)
-            {
-                for (int j = 0; j < cols; j++)
-                {
-                    if (arr[i,j]==1)
-                    {
-                        count++;
-                    }
-                }
-            }
-
-            return count;
-
-        }
         #endregion
 
         #region Storyboard Garbage
@@ -245,10 +201,21 @@ namespace FlipTile
                 }
                    
             }
-                
+
             //Win condition
+            
             if (winFlag == 0 && animating == false)
-                Frame.Navigate(typeof(MainPage));
+            {
+                String time = txtTimer.Text.ToString();
+                String flips = flipCount.ToString();
+                String[] param = new String[2];
+                param[0] = time;
+                param[1] = flips;
+                dispatcherTimer.Stop();
+                stopWatch.Stop();
+                Frame.Navigate(typeof(WinPage), param);
+            }
+
         }
 
         private void MainGrid_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -299,38 +266,82 @@ namespace FlipTile
         }
 
         //Flips everything over, then randomizes the board
-        private async void Reset_Tapped(object sender, TappedRoutedEventArgs e)
+        private void Reset_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            resetting = true;
-            for (int i = 0; i < cols; i++)
-            {
-                for (int j = 0; j < rows; j++)
-                {
-                    if (i == (cols-1) && j == (rows-1))
-                        lastTile = true;
-                    if (tileGrid[j, i].Faceup == true)
-                    {
-                        //wait for the previous animation to finish
-                        while (animating)
-                        {
-                            //poll every 25ms
-                            await Task.Delay(25);
-                        }
+            BeginButtonGrid.Visibility = Visibility.Visible;
 
-                        Flip(tileGrid[j, i], rectTappedSB);
+            winFlag = 24;
+
+            for (int i = 0; i < tileGrid.GetLength(0); i++)
+            {
+                for (int j = 0; j < tileGrid.GetLength(1); j++)
+                {
+                    tileGrid[i, j].Faceup = false;
+                    ((SolidColorBrush)tileGrid[i, j].Rect.Fill).Color = Tile.FaceDownColor;
+                }
+            }
+            RecallImprint();
+            
+        }
+
+        //Try to ecapsulate this stuff, would make implementing the previous games feature easier
+        private async void RecallImprint()//pass in the array in the future
+        {
+            GoInstant();
+            int count = GetFlipCount(GameboardImprint);
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < cols; j++)
+                {
+                    while (animating)
+                    {
+                        //poll every 25ms
+                        await Task.Delay(25);
+                    }
+
+                    if (GameboardImprint[i, j] == 1)
+                    {
+
+                        if (--count == 0)
+                            lastTile = true;
+
+                        BatchFlip(i, j);
+
                     }
 
                 }
+
+            }
+            GoFast();
+        }
+
+        private int GetFlipCount(int[,] arr)
+        {
+
+            int rows = arr.GetLength(0);
+            int cols = arr.GetLength(1);
+            int count = 0;
+
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < cols; j++)
+                {
+                    if (arr[i, j] == 1)
+                    {
+                        count++;
+                    }
+                }
             }
 
-            RecallImprint();
-            
+            return count;
+
         }
 
         private void tapped(object sender, TappedRoutedEventArgs e)
         {
             if (!animating)
             {
+                flipCount++;
                 //get the target of the storyboard
                 char[] name = ((Rectangle)sender).Name.ToCharArray();
 
