@@ -7,21 +7,58 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{StaticResource BackgroundColor}">
+    <Grid Background="{StaticResource ForegroundColor}">
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="7*"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Margin="15" HorizontalAlignment="Center">
-            <Border Background ="{StaticResource ForegroundColor}">
-                <TextBlock  HorizontalAlignment="Center" Text="FlipTile" Margin="10" FontWeight="Bold" FontSize="72"/>
+        <Viewbox Stretch="Uniform">
+            <Border HorizontalAlignment="Stretch">
+                <TextBlock  HorizontalAlignment="Stretch" Text="FlipTile" Margin="10" FontWeight="Bold" FontStretch="Expanded"  />
             </Border>
-        </StackPanel>
+        </Viewbox>
+
+
+        <!--
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Background="{StaticResource ForegroundColor}" x:Name="NewGame" Content="New Game" FontSize="32" Margin="10"  VerticalAlignment="Center" Click="New_Click"/>
             <Button Background="{StaticResource ForegroundColor}" x:Name="PreviousGames" Content="Previous Games" FontSize="32"  Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
 
-        </StackPanel>
+        </StackPanel>-->
+
+
+        <Grid Grid.Row="1" Background="{StaticResource BackgroundColor}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="4*"/>
+                <RowDefinition Height="6*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0" Margin="5" Background="{StaticResource ForegroundColor}">
+                <TextBlock Grid.Row="0" Grid.ColumnSpan="1" Margin="5" Text="Pick your difficulty to start"></TextBlock>
+            </Border>
+            <Border  Background="{StaticResource ForegroundColor}" Grid.Column="1" Grid.ColumnSpan="2" Margin="5">
+                <TextBlock Grid.Row="0" Margin=" 5" Grid.Column="1" Grid.ColumnSpan="2" Text="Your goal is make all the tiles the same color. Tap or click on one to flip it over, but each tile adjacent to it will also flip over!" TextWrapping="Wrap"></TextBlock>
+            </Border>
+
+            <Border Grid.Row="2" Grid.ColumnSpan="3" Margin="5" Background="{StaticResource ForegroundColor}">
+                <Grid Grid.Row="2" Grid.ColumnSpan="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="EasyButton" Grid.Row="1" Grid.Column="0" Width="100" Height="100" HorizontalAlignment="Center" Tapped="EasyButton_Tapped">Easy</Button>
+                    <Button x:Name="MedButton" Grid.Row="1" Grid.Column="1" Width="100" Height="100" HorizontalAlignment="Center" Tapped="MedButton_Tapped">Medium</Button>
+                    <Button x:Name="HardButton" Grid.Row="1" Grid.Column="2" Width="100" Height="100" HorizontalAlignment="Center" Tapped="HardButton_Tapped">Hard</Button>
+                </Grid>
+            </Border>
+
+        </Grid>
+
 
 
     </Grid>

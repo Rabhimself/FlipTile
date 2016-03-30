@@ -10,6 +10,10 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Shapes;
 using Windows.Data.Json;
+using Windows.UI.Xaml.Navigation;
+using Windows.Storage;
+using System.Xml.Serialization;
+using System.IO;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -26,17 +30,15 @@ namespace FlipTile
         #region Global Vars
         //global variable for checking if an animation is running
         private Boolean animating = false;
-        private Boolean resetting = false;
-        private Boolean lastTile = false;
         //Use a grid to ref tiles, reduce findname calls
-        private static int rows = 4, cols = 6, winFlag = 24, flipCount = 0;
+        private static int rows = 4, cols = 6, winFlag = 24, flipCount = 0, max;
         private Tile[,] tileGrid = new Tile[rows, cols];
         //Timer stuff
         DispatcherTimer dispatcherTimer;
         Stopwatch stopWatch;
         private long ms = 0, ss = 0, mm = 0, hh = 0;
         //
-        int[,] GameboardImprint = new int[rows,cols];
+        int[,] GameboardImprint;
 
         //
         
@@ -44,7 +46,8 @@ namespace FlipTile
 
         public GamePage()
         {
-            this.InitializeComponent();         
+            this.InitializeComponent();
+                     
             Loaded += PageLoaded;
             
 
@@ -58,10 +61,18 @@ namespace FlipTile
             
         }
 
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+
+            int diff = (int)e.Parameter;
+            max = diff * 5;
+            GameboardImprint = new int [max,2];
+        }
+
         //sets up the tilegrid for use later on
         private void Init()
         {
-            GoInstant();
+            
             winFlag = 24;
             for (int row = 0; row < 4; row++)
             {
@@ -73,9 +84,8 @@ namespace FlipTile
                     tileGrid[row, col] = tile;
                 }
             }
-            Randomize();
-
-            GetSpeedSetting();
+            GoInstant();
+            Randomize();            
 
         }
 
@@ -131,26 +141,60 @@ namespace FlipTile
         {
 
             Random rand = new Random();
-            int max = 1;
-
+            int prevCol = -1, col;
+            int prevRow = -1, row;
             for (int i = 0; i < max; i++)
             {
-                int row = rand.Next(3);
-                int col = rand.Next(5);
 
+                do
+                {
+                    row = rand.Next(3);
+                    col = rand.Next(5);
+                }
+                while ((row == prevRow) && (col == prevCol));
+
+                prevCol = col;
+                prevRow = row;
+                
                 //wait for the previous animation to finish
                 while (animating)
                 {
                     //poll every 25ms
-                    await Task.Delay(25);
+                    await Task.Delay(5);
                 }
                 
                 BatchFlip(row, col);
-                GameboardImprint[row, col] = 1;
+                GameboardImprint[i, 0] = row;
+                GameboardImprint[i, 1] = col;
             }
-
+            //StoreImprint(GameboardImprint);
+            GetSpeedSetting();
         }
 
+        private async void StoreImprint(int[,] imprint)
+        {
+            var serializer = new XmlSerializer(typeof(List<>));
+            StorageFile file = await ApplicationData.Current.RoamingFolder.GetFileAsync("Imprints.xml");
+            List<Array> arrays;
+            Stream stream;
+            
+
+            if (file != null)
+            {
+                var readStream = await file.OpenReadAsync();
+                stream = readStream.AsStreamForRead();
+                arrays = (List<Array>)serializer.Deserialize(stream);
+            }
+            else
+            {
+                file = await ApplicationData.Current.RoamingFolder.CreateFileAsync("Imprints.xml");
+                arrays = new List<Array>();
+            }
+
+            arrays.Add(imprint);
+            stream = await file.OpenStreamForWriteAsync();          
+            serializer.Serialize(stream, imprint);
+        }
 
 
         #endregion
@@ -222,16 +266,7 @@ namespace FlipTile
             //The only storyboard with 3 children is the center, Since the outside tiles take longer to animate, only flip the animating boolean if one of them is calling this
             if (((Storyboard)sender).Children.Count < 3)
                 animating = false;
-            else
-            {
-                if (resetting)
-                {
-                    animating = false;
-                    if (lastTile)                 
-                        resetting = lastTile = false;
-                }
-                   
-            }
+
 
             //Win condition
             
@@ -244,32 +279,13 @@ namespace FlipTile
 
         private void GoToWinPage()
         {
-            //var roamingSettings = Windows.Storage.ApplicationData.Current.RoamingSettings;
+            
 
             string time = txtTimer.Text.ToString();
             string flips = flipCount.ToString();
             string[] param = new String[2];
 
-            ////get other games
-            //Array[] games; 
-            //Object json = roamingSettings.Values["PreviousGames"];
-            //if(json != null)
-            //{
-            //    JsonValue parsedJson; 
-            //    if(JsonValue.TryParse(json.ToString(), out parsedJson))
-            //    {
-            //        JsonArray arr = parsedJson.GetArray();
-            //        arr.Add();
-            //    }
-            //}
-            //turn into an array
 
-            //add the currentgame to the array
-
-
-            //convert the array to json
-
-            //store it in the roaming settings
 
 
 
@@ -352,31 +368,20 @@ namespace FlipTile
         private async void RecallImprint()//pass in the array in the future
         {
             GoInstant();
-            int count = GetFlipCount(GameboardImprint);
-            for (int i = 0; i < rows; i++)
+            int count = GameboardImprint.GetLength(0);
             {
-                for (int j = 0; j < cols; j++)
+                for (int i = 0; i < count; i++)
                 {
                     while (animating)
                     {
                         //poll every 25ms
-                        await Task.Delay(25);
+                        await Task.Delay(5);
                     }
-
-                    if (GameboardImprint[i, j] == 1)
-                    {
-
-                        if (--count == 0)
-                            lastTile = true;
-
-                        BatchFlip(i, j);
-
-                    }
-
+                    BatchFlip(GameboardImprint[i, 0], GameboardImprint[i,1]);
                 }
-
             }
-            GoFast();
+
+            GetSpeedSetting();
         }
 
         private int GetFlipCount(int[,] arr)
@@ -489,11 +494,11 @@ namespace FlipTile
         #region Pain
         private void GoInstant()
         {
-            rectTappedSB.Duration = new Duration(new TimeSpan(0, 0, 0, 0, 1));
-            rectLeftSB.Duration = new Duration(new TimeSpan(0, 0, 0, 0, 1));
-            rectRightSB.Duration = new Duration(new TimeSpan(0, 0, 0, 0, 1));
-            rectUpSB.Duration = new Duration(new TimeSpan(0, 0, 0, 0, 1));
-            rectDownSB.Duration = new Duration(new TimeSpan(0, 0, 0, 0, 1));
+            rectTappedSB.Duration = new Duration(new TimeSpan(0, 0, 0, 0, 0));
+            rectLeftSB.Duration = new Duration(new TimeSpan(0, 0, 0, 0, 0));
+            rectRightSB.Duration = new Duration(new TimeSpan(0, 0, 0, 0, 0));
+            rectUpSB.Duration = new Duration(new TimeSpan(0, 0, 0, 0, 0));
+            rectDownSB.Duration = new Duration(new TimeSpan(0, 0, 0, 0, 0));
         }
 
         private void GoNormal()

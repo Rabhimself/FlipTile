@@ -23,14 +23,28 @@ namespace FlipTile
     //      
     public sealed partial class MainPage : Page
     {
+        private static int diff;
         public MainPage()
         {
             this.InitializeComponent();
         }
 
-        private void New_Click(object sender, RoutedEventArgs e)
+        private void EasyButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            Frame.Navigate(typeof (GamePage) );
+            diff = 1;
+            Frame.Navigate(typeof(GamePage), diff);
+        }
+
+        private void MedButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            diff = 2;
+            Frame.Navigate(typeof(GamePage), diff);
+        }
+
+        private void HardButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            diff = 3;
+            Frame.Navigate(typeof(GamePage), diff);
         }
     }
 }
