@@ -7,9 +7,22 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Button x:Name="button" Content="Start" HorizontalAlignment="Left" Margin="222,177,0,0" VerticalAlignment="Top" Click="button_Click"/>
-        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="179,137,0,0" TextWrapping="Wrap" Text="Main menu in progress" VerticalAlignment="Top"/>
+    <Grid Background="{StaticResource BackgroundColor}">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Margin="15" HorizontalAlignment="Center">
+            <Border Background ="{StaticResource ForegroundColor}">
+                <TextBlock  HorizontalAlignment="Center" Text="FlipTile" Margin="10" FontWeight="Bold" FontSize="72"/>
+            </Border>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Background="{StaticResource ForegroundColor}" x:Name="NewGame" Content="New Game" FontSize="32" Margin="10"  VerticalAlignment="Center" Click="New_Click"/>
+            <Button Background="{StaticResource ForegroundColor}" x:Name="PreviousGames" Content="Previous Games" FontSize="32"  Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+
+        </StackPanel>
+
 
     </Grid>
 </Page>

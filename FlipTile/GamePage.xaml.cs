@@ -39,7 +39,7 @@ namespace FlipTile
         int[,] GameboardImprint = new int[rows,cols];
 
         //
-
+        
         #endregion
 
         public GamePage()
@@ -55,13 +55,13 @@ namespace FlipTile
         private void PageLoaded(object sender, RoutedEventArgs e)
         {
             Init();
-            Randomize();
+            
         }
 
         //sets up the tilegrid for use later on
         private void Init()
         {
-           GoInstant();
+            GoInstant();
             winFlag = 24;
             for (int row = 0; row < 4; row++)
             {
@@ -69,9 +69,40 @@ namespace FlipTile
                 {
                     Tile tile = new Tile();
                     tile.Rect = (Rectangle)FindName("r" + row + "" + col);
-
+                    tile.Rect.Fill = new SolidColorBrush(Tile.FaceDownColor);
                     tileGrid[row, col] = tile;
                 }
+            }
+            Randomize();
+
+            GetSpeedSetting();
+
+        }
+
+        private void GetSpeedSetting()
+        {
+            object setting = Windows.Storage.ApplicationData.Current.RoamingSettings.Values["DesiredSpeed"];
+            string speed = "normal";
+
+            if (setting != null)
+            {
+                speed = setting.ToString();
+            }
+
+            switch (speed)
+            {
+                case "fast":
+                    GoFast();
+                    break;
+                case "normal":
+                    GoNormal();
+                    break;
+                case "slow":
+                    GoSlow();
+                    break;
+                default:
+                    GoNormal();
+                    break;
             }
         }
 
@@ -204,18 +235,51 @@ namespace FlipTile
 
             //Win condition
             
-            if (winFlag == 0 && animating == false)
+            if ((winFlag == 0 || winFlag == 24) && animating == false)
             {
-                String time = txtTimer.Text.ToString();
-                String flips = flipCount.ToString();
-                String[] param = new String[2];
-                param[0] = time;
-                param[1] = flips;
-                dispatcherTimer.Stop();
-                stopWatch.Stop();
-                Frame.Navigate(typeof(WinPage), param);
+                GoToWinPage();
             }
 
+        }
+
+        private void GoToWinPage()
+        {
+            //var roamingSettings = Windows.Storage.ApplicationData.Current.RoamingSettings;
+
+            string time = txtTimer.Text.ToString();
+            string flips = flipCount.ToString();
+            string[] param = new String[2];
+
+            ////get other games
+            //Array[] games; 
+            //Object json = roamingSettings.Values["PreviousGames"];
+            //if(json != null)
+            //{
+            //    JsonValue parsedJson; 
+            //    if(JsonValue.TryParse(json.ToString(), out parsedJson))
+            //    {
+            //        JsonArray arr = parsedJson.GetArray();
+            //        arr.Add();
+            //    }
+            //}
+            //turn into an array
+
+            //add the currentgame to the array
+
+
+            //convert the array to json
+
+            //store it in the roaming settings
+
+
+
+
+
+            param[0] = time;
+            param[1] = flips;
+            dispatcherTimer.Stop();
+            stopWatch.Stop();
+            Frame.Navigate(typeof(WinPage), param);
         }
 
         private void MainGrid_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -229,18 +293,18 @@ namespace FlipTile
         private void Fast_Tapped(object sender, TappedRoutedEventArgs e)
         {
             if (animating == false)
-                SetAnimSpeed(2);
+                StoreAnimSpeed(2);
         }
 
         private void Medium_Tapped(object sender, TappedRoutedEventArgs e)
         {
             if (animating == false)
-                SetAnimSpeed(3);
+                StoreAnimSpeed(3);
         }
         private void Slow_Tapped(object sender, TappedRoutedEventArgs e)
         {
             if(animating == false)
-                SetAnimSpeed(4);
+                StoreAnimSpeed(4);
         }
         #endregion
 
@@ -382,7 +446,6 @@ namespace FlipTile
 
         private void BeginButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            GoNormal();
             dispatcherTimer = new DispatcherTimer();
             stopWatch = new Stopwatch();
             dispatcherTimer.Tick += Dispatcher_Tick;
@@ -391,21 +454,25 @@ namespace FlipTile
             BeginButtonGrid.Visibility = Visibility.Collapsed;
         }
 
-        private void SetAnimSpeed(int speed)
+        private void StoreAnimSpeed(int speed)
         {
+            string setting = "normal";
+
             switch (speed)
             {
-                //fastest, just for doing the randomizing. Doesn't have to look pretty.
+                //fastest(1ms), just for doing the randomizing. Doesn't have to look pretty.
                 case 1:
                     GoInstant();
                     break;
                 //fast
                 case 2:
+                    setting = "fast";
                     GoFast();
                     break;
 
                 //slow
                 case 4:
+                    setting = "slow";
                     GoSlow();
                     break;
 
@@ -414,8 +481,12 @@ namespace FlipTile
                     break;
 
             }
-        }
 
+            Windows.Storage.ApplicationData.Current.RoamingSettings.Values["DesiredSpeed"] = setting;
+        }
+        #endregion
+
+        #region Pain
         private void GoInstant()
         {
             rectTappedSB.Duration = new Duration(new TimeSpan(0, 0, 0, 0, 1));

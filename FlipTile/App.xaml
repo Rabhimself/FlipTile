@@ -4,5 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:FlipTile"
     RequestedTheme="Light">
-
+    <Application.Resources>
+        <SolidColorBrush x:Key="ForegroundColor" Color="#22A7F0"/>
+        <SolidColorBrush x:Key="BackgroundColor" Color="#1F3A93"/>
+    </Application.Resources>
 </Application>

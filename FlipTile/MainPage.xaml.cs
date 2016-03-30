@@ -28,7 +28,7 @@ namespace FlipTile
             this.InitializeComponent();
         }
 
-        private void button_Click(object sender, RoutedEventArgs e)
+        private void New_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof (GamePage) );
         }
