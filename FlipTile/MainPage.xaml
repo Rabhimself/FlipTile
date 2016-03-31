@@ -14,7 +14,7 @@
         </Grid.RowDefinitions>
         <Viewbox Stretch="Uniform">
             <Border HorizontalAlignment="Stretch">
-                <TextBlock  HorizontalAlignment="Stretch" Text="FlipTile" Margin="10" FontWeight="Bold" FontStretch="Expanded"  />
+                <TextBlock  HorizontalAlignment="Stretch" Text="FlipTile" Margin="10" FontWeight="Bold" FontStretch="Expanded" FontFamily="Consolas"  />
             </Border>
         </Viewbox>
 
@@ -37,23 +37,29 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Border Grid.Column="0" Margin="5" Background="{StaticResource ForegroundColor}">
-                <TextBlock Grid.Row="0" Grid.ColumnSpan="1" Margin="5" Text="Pick your difficulty to start"></TextBlock>
-            </Border>
-            <Border  Background="{StaticResource ForegroundColor}" Grid.Column="1" Grid.ColumnSpan="2" Margin="5">
-                <TextBlock Grid.Row="0" Margin=" 5" Grid.Column="1" Grid.ColumnSpan="2" Text="Your goal is make all the tiles the same color. Tap or click on one to flip it over, but each tile adjacent to it will also flip over!" TextWrapping="Wrap"></TextBlock>
+            <Border  Background="#3498DB" Grid.Column="0" Grid.ColumnSpan="3" Margin="20,10,20,5">
+                <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0"   Text="Goal: Make all the tiles the same color." TextWrapping="Wrap" FontFamily="Consolas" FontSize="16"></TextBlock>
+                    <TextBlock Grid.Row="1" TextWrapping="Wrap" FontFamily="Consolas" FontSize="16" Text="Tap or click on one to flip it over, but each tile adjacent to it will also flip over"/>
+                    <TextBlock Grid.Row="2" VerticalAlignment="Bottom"  Text="Pick a difficulty to start" FontFamily="Consolas"></TextBlock>
+                </Grid>
             </Border>
 
-            <Border Grid.Row="2" Grid.ColumnSpan="3" Margin="5" Background="{StaticResource ForegroundColor}">
+            <Border Grid.Row="2" Grid.ColumnSpan="3" Margin="5">
                 <Grid Grid.Row="2" Grid.ColumnSpan="3">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Button x:Name="EasyButton" Grid.Row="1" Grid.Column="0" Width="100" Height="100" HorizontalAlignment="Center" Tapped="EasyButton_Tapped">Easy</Button>
-                    <Button x:Name="MedButton" Grid.Row="1" Grid.Column="1" Width="100" Height="100" HorizontalAlignment="Center" Tapped="MedButton_Tapped">Medium</Button>
-                    <Button x:Name="HardButton" Grid.Row="1" Grid.Column="2" Width="100" Height="100" HorizontalAlignment="Center" Tapped="HardButton_Tapped">Hard</Button>
+                    <Button x:Name="EasyButton" Background="#ECECEC" Grid.Row="1" Grid.Column="0" Margin="20" HorizontalAlignment="Stretch" FontWeight="Bold" VerticalAlignment="Stretch" Tapped="EasyButton_Tapped" FontFamily="Consolas">Easy</Button>
+                    <Button x:Name="MedButton" Background="#3498DB" Grid.Row="1" Grid.Column="1"  Margin="20" HorizontalAlignment="Stretch"  FontWeight="Bold" VerticalAlignment="Stretch" Tapped="MedButton_Tapped" FontFamily="Consolas">Medium</Button>
+                    <Button x:Name="HardButton" Background="#67809F" Grid.Row="1" Grid.Column="2"  Margin="20" HorizontalAlignment="Stretch"  FontWeight="Bold" VerticalAlignment="Stretch" Tapped="HardButton_Tapped" FontFamily="Consolas">Hard</Button>
                 </Grid>
             </Border>
 

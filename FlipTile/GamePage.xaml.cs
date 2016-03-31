@@ -19,19 +19,14 @@ using System.IO;
 
 namespace FlipTile
 {
-    //TODO: Figure out why the ui becomes unresponsive at times, for about 1sec. May coincide with GC, reduction of local variables didn't help much.
-    //      Move everything from loaded to a start button
-    // Animation speed setting
-    // store previous games for replayability, store randomize events in an array, reproduce them in a list view?
-    //reset button rework, needs the replayability stuff done first, if that gets done
-
+    
     public sealed partial class GamePage : Page
     {
         #region Global Vars
         //global variable for checking if an animation is running
         private Boolean animating = false;
         //Use a grid to ref tiles, reduce findname calls
-        private static int rows = 4, cols = 6, winFlag = 24, flipCount = 0, max;
+        private static int rows = 4, cols = 6, winFlag = 24, flipCount = 0, max, animatingTiles = 0;
         private Tile[,] tileGrid = new Tile[rows, cols];
         //Timer stuff
         DispatcherTimer dispatcherTimer;
@@ -131,8 +126,7 @@ namespace FlipTile
 
             txtTimer.Text = hh.ToString("00") + ":" +
                                    mm.ToString("00") + ":" +
-                                   ss.ToString("00") + ":" +
-                                   ms.ToString("000");
+                                   ss.ToString("00");
         }
 
 
@@ -245,8 +239,6 @@ namespace FlipTile
                 ((SolidColorBrush)tileGrid[row, col].Rect.Fill).Color = Tile.FaceUpColor;
             }
 
-
-
             //using yet another cast to reduce local variables on the heap
             ((Storyboard)sender).Stop();
 
@@ -263,40 +255,22 @@ namespace FlipTile
             else
                 winFlag++;
 
+            
             //The only storyboard with 3 children is the center, Since the outside tiles take longer to animate, only flip the animating boolean if one of them is calling this
             if (((Storyboard)sender).Children.Count < 3)
                 animating = false;
 
 
             //Win condition
-            
-            if ((winFlag == 0 || winFlag == 24) && animating == false)
+            --animatingTiles;
+            if ((winFlag == 0 || winFlag == 24) && animatingTiles == 0)
             {
                 GoToWinPage();
             }
 
         }
 
-        private void GoToWinPage()
-        {
-            
 
-            string time = txtTimer.Text.ToString();
-            string flips = flipCount.ToString();
-            string[] param = new String[2];
-
-
-
-
-
-
-
-            param[0] = time;
-            param[1] = flips;
-            dispatcherTimer.Stop();
-            stopWatch.Stop();
-            Frame.Navigate(typeof(WinPage), param);
-        }
 
         private void MainGrid_SizeChanged(object sender, SizeChangedEventArgs e)
         {
@@ -306,22 +280,7 @@ namespace FlipTile
             //align on page
         }
 
-        private void Fast_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            if (animating == false)
-                StoreAnimSpeed(2);
-        }
 
-        private void Medium_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            if (animating == false)
-                StoreAnimSpeed(3);
-        }
-        private void Slow_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            if(animating == false)
-                StoreAnimSpeed(4);
-        }
         #endregion
 
         #region Tapped Events
@@ -345,6 +304,23 @@ namespace FlipTile
             stopWatch.Start();
         }
 
+        private void Fast_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            if (animating == false)
+                StoreAnimSpeed(2);
+        }
+
+        private void Medium_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            if (animating == false)
+                StoreAnimSpeed(3);
+        }
+        private void Slow_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            if (animating == false)
+                StoreAnimSpeed(4);
+        }
+
         //Flips everything over, then randomizes the board
         private void Reset_Tapped(object sender, TappedRoutedEventArgs e)
         {
@@ -362,48 +338,6 @@ namespace FlipTile
             }
             RecallImprint();
             
-        }
-
-        //Try to ecapsulate this stuff, would make implementing the previous games feature easier
-        private async void RecallImprint()//pass in the array in the future
-        {
-            GoInstant();
-            int count = GameboardImprint.GetLength(0);
-            {
-                for (int i = 0; i < count; i++)
-                {
-                    while (animating)
-                    {
-                        //poll every 25ms
-                        await Task.Delay(5);
-                    }
-                    BatchFlip(GameboardImprint[i, 0], GameboardImprint[i,1]);
-                }
-            }
-
-            GetSpeedSetting();
-        }
-
-        private int GetFlipCount(int[,] arr)
-        {
-
-            int rows = arr.GetLength(0);
-            int cols = arr.GetLength(1);
-            int count = 0;
-
-            for (int i = 0; i < rows; i++)
-            {
-                for (int j = 0; j < cols; j++)
-                {
-                    if (arr[i, j] == 1)
-                    {
-                        count++;
-                    }
-                }
-            }
-
-            return count;
-
         }
 
         private void tapped(object sender, TappedRoutedEventArgs e)
@@ -426,25 +360,30 @@ namespace FlipTile
         private void BatchFlip(int row, int col)
         {
             Flip(tileGrid[row, col], rectTappedSB);
-
+            animatingTiles++;
             //down
             if (!(row - 1 < 0))
             {
+                animatingTiles++;
                 Flip(tileGrid[row - 1, col], rectDownSB);
+
             }
             //up
             if (!(row + 1 > 3))
             {
+                animatingTiles++;
                 Flip(tileGrid[row + 1, col], rectUpSB);
             }
             //Left
             if (!(col - 1 < 0))
             {
+                animatingTiles++;
                 Flip(tileGrid[row, col - 1], rectLeftSB);
             }
             //right
             if (!(col + 1 > 5))
             {
+                animatingTiles++;
                 Flip(tileGrid[row, col + 1], rectRightSB);
             }
         }
@@ -453,12 +392,16 @@ namespace FlipTile
         {
             dispatcherTimer = new DispatcherTimer();
             stopWatch = new Stopwatch();
+            flipCount = 0;
             dispatcherTimer.Tick += Dispatcher_Tick;
             dispatcherTimer.Start();
             stopWatch.Start();
             BeginButtonGrid.Visibility = Visibility.Collapsed;
+
         }
 
+
+        #endregion
         private void StoreAnimSpeed(int speed)
         {
             string setting = "normal";
@@ -489,8 +432,61 @@ namespace FlipTile
 
             Windows.Storage.ApplicationData.Current.RoamingSettings.Values["DesiredSpeed"] = setting;
         }
-        #endregion
 
+        private void GoToWinPage()
+        {
+
+            string time = txtTimer.Text.ToString();
+            string flips = flipCount.ToString();
+            string[] param = new String[2];
+
+            param[0] = time;
+            param[1] = flips;
+            dispatcherTimer.Stop();
+            stopWatch.Stop();
+            Frame.Navigate(typeof(WinPage), param);
+        }
+
+        private async void RecallImprint()//pass in the array in the future
+        {
+            GoInstant();
+            int count = GameboardImprint.GetLength(0);
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    while (animating)
+                    {
+                        //poll every 25ms
+                        await Task.Delay(5);
+                    }
+                    BatchFlip(GameboardImprint[i, 0], GameboardImprint[i, 1]);
+                }
+            }
+
+            GetSpeedSetting();
+        }
+
+        private int GetFlipCount(int[,] arr)
+        {
+
+            int rows = arr.GetLength(0);
+            int cols = arr.GetLength(1);
+            int count = 0;
+
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < cols; j++)
+                {
+                    if (arr[i, j] == 1)
+                    {
+                        count++;
+                    }
+                }
+            }
+
+            return count;
+
+        }
         #region Pain
         private void GoInstant()
         {

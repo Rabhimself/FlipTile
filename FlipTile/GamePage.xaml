@@ -100,6 +100,7 @@
         </Style>
         <Style TargetType="Button" x:Name="ButtonStyle">
             <Setter Property="Margin" Value="5"></Setter>
+            <Setter Property="Height" Value="50"></Setter>
             <Setter Property="VerticalAlignment" Value="Center"></Setter>
             <Setter Property="Foreground" Value="Black"></Setter>
             <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
@@ -112,10 +113,11 @@
 
     <Grid x:Name="MainGrid" Background="{StaticResource BackgroundColor}" SizeChanged="MainGrid_SizeChanged" >
         <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="3*"></RowDefinition>
+            <RowDefinition Height="3*"></RowDefinition>
+            <RowDefinition Height="3*"></RowDefinition>
+            <RowDefinition Height="3*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition MinWidth="100"></ColumnDefinition>
@@ -126,15 +128,10 @@
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="0" Grid.Row="0" VerticalAlignment="Stretch" Background="{StaticResource BackgroundColor}" >
-
+        <StackPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="7" VerticalAlignment="Stretch" Background="{StaticResource BackgroundColor}" >
             <StackPanel Background="{StaticResource ForegroundColor}" HorizontalAlignment="Stretch" VerticalAlignment="Center">
-
                 <TextBlock x:Name="txtTimer" Margin="5" Text="00:00:00" Foreground="Black" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                </StackPanel>
-
-
-
+            </StackPanel>
         </StackPanel>
 
         <StackPanel Grid.Column="0" Grid.Row="1" Grid.RowSpan="3" VerticalAlignment="Stretch" >
@@ -159,34 +156,34 @@
         </StackPanel>
 
 
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="1" Grid.Row="0" Name="r00" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="2" Grid.Row="0" Name="r01" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="3" Grid.Row="0" Name="r02" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="4" Grid.Row="0" Name="r03" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="5" Grid.Row="0" Name="r04" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="6" Grid.Row="0" Name="r05" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="1" Grid.Row="1" Name="r10" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="2" Grid.Row="1" Name="r11" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="3" Grid.Row="1" Name="r12" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="4" Grid.Row="1" Name="r13" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="5" Grid.Row="1" Name="r14" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="6" Grid.Row="1" Name="r15" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="1" Grid.Row="2" Name="r20" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="2" Grid.Row="2" Name="r21" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="3" Grid.Row="2" Name="r22" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="4" Grid.Row="2" Name="r23" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="5" Grid.Row="2" Name="r24" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="6" Grid.Row="2" Name="r25" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="1" Grid.Row="3" Name="r30" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="2" Grid.Row="3" Name="r31" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="3" Grid.Row="3" Name="r32" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="4" Grid.Row="3" Name="r33" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="5" Grid.Row="3" Name="r34" Tapped="tapped"/>
-        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="6" Grid.Row="3" Name="r35" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="1" Grid.Row="1" Name="r00" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="2" Grid.Row="1" Name="r01" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="3" Grid.Row="1" Name="r02" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="4" Grid.Row="1" Name="r03" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="5" Grid.Row="1" Name="r04" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="6" Grid.Row="1" Name="r05" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="1" Grid.Row="2" Name="r10" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="2" Grid.Row="2" Name="r11" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="3" Grid.Row="2" Name="r12" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="4" Grid.Row="2" Name="r13" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="5" Grid.Row="2" Name="r14" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="6" Grid.Row="2" Name="r15" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="1" Grid.Row="3" Name="r20" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="2" Grid.Row="3" Name="r21" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="3" Grid.Row="3" Name="r22" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="4" Grid.Row="3" Name="r23" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="5" Grid.Row="3" Name="r24" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="6" Grid.Row="3" Name="r25" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="1" Grid.Row="4" Name="r30" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="2" Grid.Row="4" Name="r31" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="3" Grid.Row="4" Name="r32" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="4" Grid.Row="4" Name="r33" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="5" Grid.Row="4" Name="r34" Tapped="tapped"/>
+        <Rectangle Style="{StaticResource rectStyle}"  Grid.Column="6" Grid.Row="4" Name="r35" Tapped="tapped"/>
 
 
-        <Grid x:Name="BeginButtonGrid" Background="{StaticResource BackgroundColor}" Grid.Column="1" Grid.Row="0" Grid.RowSpan="4" Grid.ColumnSpan="6">
-            <Button Background="{StaticResource ForegroundColor}" HorizontalAlignment="Center" VerticalAlignment="Center" Tapped="BeginButton_Tapped">Start!</Button>
+        <Grid x:Name="BeginButtonGrid" Background="{StaticResource BackgroundColor}" Grid.Column="1" Grid.Row="1" Grid.RowSpan="4" Grid.ColumnSpan="6">
+            <Button Background="{StaticResource ForegroundColor}" HorizontalAlignment="Center" VerticalAlignment="Center" Tapped="BeginButton_Tapped" Height="100" Width="200" FontSize="32" FontFamily="Consolas">Start!</Button>
         </Grid>
     </Grid>
 
