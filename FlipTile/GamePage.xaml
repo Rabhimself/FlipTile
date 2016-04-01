@@ -6,16 +6,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-    <!--<VisualStateManager.VisualStateGroups>            
-        <VisualStateGroup>                
-            <VisualState>                    
-                <VisualState.StateTriggers>                    
-                </VisualState.StateTriggers>
-                <VisualState.Setters>                        
-                </VisualState.Setters>                 
-            </VisualState>             
-        </VisualStateGroup>         
-    </VisualStateManager.VisualStateGroups>-->
 
     <Page.Resources>
 
@@ -111,7 +101,7 @@
         </Style>
     </Page.Resources>
 
-    <Grid x:Name="MainGrid" Background="{StaticResource BackgroundColor}" SizeChanged="MainGrid_SizeChanged" >
+    <Grid x:Name="MainGrid" Background="{StaticResource BackgroundColor}" >
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"></RowDefinition>
             <RowDefinition Height="3*"></RowDefinition>
@@ -135,9 +125,9 @@
         </StackPanel>
 
         <StackPanel Grid.Column="0" Grid.Row="1" Grid.RowSpan="3" VerticalAlignment="Stretch" >
-            <Button Style="{StaticResource ButtonStyle}" Tapped="Pause_Tapped">Pause</Button>
-            <Button Style="{StaticResource ButtonStyle}" Tapped="Reset_Tapped">Reset</Button>
-            <Button Style ="{StaticResource ButtonStyle}" Content="Speed">
+            <Button x:Uid="PauseButton" Style="{StaticResource ButtonStyle}" Tapped="Pause_Tapped"></Button>
+            <Button x:Uid="ResetButton" Style="{StaticResource ButtonStyle}" Tapped="Reset_Tapped"></Button>
+            <Button x:Uid="SpeedButton" Style ="{StaticResource ButtonStyle}" >
                 <Button.Flyout>
                     <MenuFlyout Placement="Bottom">
                         <MenuFlyout.MenuFlyoutPresenterStyle>
@@ -146,9 +136,9 @@
                                 <Setter Property="BorderThickness" Value="0"/>
                             </Style>
                         </MenuFlyout.MenuFlyoutPresenterStyle>
-                        <ToggleMenuFlyoutItem Style="{StaticResource FlyoutButtonStyle}" Text="Slow"  Tapped="Slow_Tapped"/>
-                        <ToggleMenuFlyoutItem Style="{StaticResource FlyoutButtonStyle}" Text="Medium"  Tapped="Medium_Tapped"/>
-                        <ToggleMenuFlyoutItem Style="{StaticResource FlyoutButtonStyle}" Text="Fast"  Tapped="Fast_Tapped"/>
+                        <ToggleMenuFlyoutItem Style="{StaticResource FlyoutButtonStyle}" x:Uid="SlowButton" Text=""   Tapped="Slow_Tapped"/>
+                        <ToggleMenuFlyoutItem Style="{StaticResource FlyoutButtonStyle}" x:Uid="MediumButton" Text=""  Tapped="Medium_Tapped"/>
+                        <ToggleMenuFlyoutItem Style="{StaticResource FlyoutButtonStyle}" x:Uid="FastButton" Text=""  Tapped="Fast_Tapped"/>
                     </MenuFlyout>
                    
                 </Button.Flyout>
@@ -183,7 +173,7 @@
 
 
         <Grid x:Name="BeginButtonGrid" Background="{StaticResource BackgroundColor}" Grid.Column="1" Grid.Row="1" Grid.RowSpan="4" Grid.ColumnSpan="6">
-            <Button Background="{StaticResource ForegroundColor}" HorizontalAlignment="Center" VerticalAlignment="Center" Tapped="BeginButton_Tapped" Height="100" Width="200" FontSize="32" FontFamily="Consolas">Start!</Button>
+            <Button Background="{StaticResource ForegroundColor}" HorizontalAlignment="Center" VerticalAlignment="Center" Tapped="BeginButton_Tapped" Height="100" Width="200" FontSize="32" FontFamily="Consolas" x:Uid="StartButton"></Button>
         </Grid>
     </Grid>
 

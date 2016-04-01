@@ -44,9 +44,9 @@
                         <RowDefinition Height="2*"/>
                         <RowDefinition Height="1*"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0"   Text="Goal: Make all the tiles the same color." TextWrapping="Wrap" FontFamily="Consolas" FontSize="16"></TextBlock>
-                    <TextBlock Grid.Row="1" TextWrapping="Wrap" FontFamily="Consolas" FontSize="16" Text="Tap or click on one to flip it over, but each tile adjacent to it will also flip over"/>
-                    <TextBlock Grid.Row="2" VerticalAlignment="Bottom"  Text="Pick a difficulty to start" FontFamily="Consolas"></TextBlock>
+                    <TextBlock Grid.Row="0" x:Uid="Goal" Text="" TextWrapping="Wrap" FontFamily="Consolas" FontSize="16"></TextBlock>
+                    <TextBlock Grid.Row="1" x:Uid="Instructions" TextWrapping="Wrap" FontFamily="Consolas" FontSize="16" Text=""/>
+                    <TextBlock Grid.Row="2" x:Uid="Start" VerticalAlignment="Bottom"  Text="" FontFamily="Consolas"></TextBlock>
                 </Grid>
             </Border>
 
@@ -57,9 +57,9 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Button x:Name="EasyButton" Background="#ECECEC" Grid.Row="1" Grid.Column="0" Margin="20" HorizontalAlignment="Stretch" FontWeight="Bold" VerticalAlignment="Stretch" Tapped="EasyButton_Tapped" FontFamily="Consolas">Easy</Button>
-                    <Button x:Name="MedButton" Background="#3498DB" Grid.Row="1" Grid.Column="1"  Margin="20" HorizontalAlignment="Stretch"  FontWeight="Bold" VerticalAlignment="Stretch" Tapped="MedButton_Tapped" FontFamily="Consolas">Medium</Button>
-                    <Button x:Name="HardButton" Background="#67809F" Grid.Row="1" Grid.Column="2"  Margin="20" HorizontalAlignment="Stretch"  FontWeight="Bold" VerticalAlignment="Stretch" Tapped="HardButton_Tapped" FontFamily="Consolas">Hard</Button>
+                    <Button x:Name="EasyButton" x:Uid="EasyButton" Background="#ECECEC" Grid.Row="1" Grid.Column="0" Margin="20" HorizontalAlignment="Stretch" FontWeight="Bold" VerticalAlignment="Stretch" Tapped="EasyButton_Tapped" FontFamily="Consolas"></Button>
+                    <Button x:Name="MedButton" x:Uid="NormalButton" Background="#3498DB" Grid.Row="1" Grid.Column="1"  Margin="20" HorizontalAlignment="Stretch"  FontWeight="Bold" VerticalAlignment="Stretch" Tapped="MedButton_Tapped" FontFamily="Consolas"></Button>
+                    <Button x:Name="HardButton" x:Uid="HardButton" Background="#67809F" Grid.Row="1" Grid.Column="2"  Margin="20" HorizontalAlignment="Stretch"  FontWeight="Bold" VerticalAlignment="Stretch" Tapped="HardButton_Tapped" FontFamily="Consolas"></Button>
                 </Grid>
             </Border>
 

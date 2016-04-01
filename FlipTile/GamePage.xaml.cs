@@ -270,17 +270,6 @@ namespace FlipTile
 
         }
 
-
-
-        private void MainGrid_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            //get form dimensions
-            //determine smaller one
-            //set correct aspect ratio
-            //align on page
-        }
-
-
         #endregion
 
         #region Tapped Events
